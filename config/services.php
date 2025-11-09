@@ -38,10 +38,4 @@ return [
     'fpl' => [
         'base' => env('FPL_API_BASE', 'https://fantasy.premierleague.com'),
     ],
-
-    'sportmonks' => [
-        'base' => env('SPORTMONKS_API_BASE', 'https://api.sportmonks.com/v3/football'),
-        'token' => env('SPORTMONKS_API_TOKEN'),
-    ],
-
 ];
