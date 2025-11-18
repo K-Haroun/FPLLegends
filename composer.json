@@ -41,6 +41,25 @@
         }
     },
     "scripts": {
+        "db-setup": [
+            "php artisan migrate:fresh",
+            "php artisan app:sync-fpl-data",
+            "php artisan app:sync-players",
+            "php artisan app:sync-fixtures",
+            "php artisan app:sync-gameweeks",
+            "php artisan app:sync-player-performances",
+            "php artisan app:sync-player-performances --gameweek_id=10",
+            "php artisan app:sync-player-performances --gameweek_id=9",
+            "php artisan app:sync-player-performances --gameweek_id=8",
+            "php artisan app:sync-player-performances --gameweek_id=7",
+            "php artisan app:sync-player-performances --gameweek_id=6",
+            "php artisan app:sync-player-performances --gameweek_id=5",
+            "php artisan app:sync-player-performances --gameweek_id=4",
+            "php artisan app:sync-player-performances --gameweek_id=3",
+            "php artisan app:sync-player-performances --gameweek_id=2",
+            "php artisan app:sync-player-performances --gameweek_id=1",
+            "php artisan app:import-player-bios file=storage/app/data/premier_league_players.csv"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
