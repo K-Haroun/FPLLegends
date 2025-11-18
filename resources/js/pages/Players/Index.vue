@@ -14,8 +14,11 @@ const breadcrumbs = [
 const props = defineProps(["players"]);
 
 const imageFile = (fpl_id, name) => {
-    const sanitizedName = name.toLowerCase().replace(/[^a-z0-9]/g, "_");
-    return `/images/players/${fpl_id}_${sanitizedName}.png`;
+    const sanitizedName = name
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "_"); // clean the whole string first
+    const capitalisedName = sanitizedName.charAt(0).toUpperCase() + sanitizedName.slice(1);
+    return `/images/players/${fpl_id}_${capitalisedName}.png`;
 };
 
 const fallbackImage = ref("/images/players/profileplaceholder.png");
@@ -32,7 +35,7 @@ const onImageError = (event) => {
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex flex-wrap justify-center p-8 gap-3">
             <div v-for="player in players.data" :key="player.id">
-            <Link :href="route('player.show', player.id)">
+                <Link :href="route('player.show', player.id)">
                 <div
                     class="flex justify-start items-center gap-3 border rounded shadow-md w-55 h-20 bg-primary-foreground border-gray-900 hover:bg-primary-foreground/70">
                     <img :src="imageFile(player.fpl_id, player.name)" :alt="`${name} profile`" @error="onImageError"
@@ -42,7 +45,7 @@ const onImageError = (event) => {
                         <h3 class="text-sm text-wrap">{{ player.team }}</h3>
                     </div>
                 </div>
-            </Link>
+                </Link>
             </div>
         </div>
 
