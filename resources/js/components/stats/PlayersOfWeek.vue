@@ -12,8 +12,11 @@ const positions = {
 };
 
 const imageFile = (fpl_id, name) => {
-    const sanitizedName = name.toLowerCase().replace(/[^a-z0-9]/g, "_");
-    return `/images/players/${fpl_id}_${sanitizedName}.png`;
+    const sanitizedName = name
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "_"); // clean the whole string first
+    const capitalisedName = sanitizedName.charAt(0).toUpperCase() + sanitizedName.slice(1);
+    return `/images/players/${fpl_id}_${capitalisedName}.png`;
 };
 
 const fallbackImage = ref("/images/players/profileplaceholder.png");
