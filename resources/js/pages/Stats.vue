@@ -25,9 +25,9 @@ const currentGameWeek = props.topPlayers.gameweek;
     <Head title="Stats" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="py-8 px-13">
+        <div class="py-6 px-8 sm:px-11">
             <SectionHeader>Players of the week</SectionHeader>
-            <div class="flex flex-wrap justify-between">
+            <div class="flex flex-wrap justify-between gap-5 sm:gap-5 mb-8">
                 <PlayersOfWeek v-for="(player, position) in topPlayers.top_players" :key="position"
                     :topPlayer="player" />
             </div>
