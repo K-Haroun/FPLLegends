@@ -16,6 +16,7 @@ class PlayerController extends Controller
 
         return Inertia::render('Players/Index', [
             'players' => PlayerResource::collection($players),
+            'allPlayers' => PlayerResource::collection(Player::all())
         ]);
     }
 

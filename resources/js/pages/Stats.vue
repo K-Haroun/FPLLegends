@@ -2,7 +2,6 @@
 import SectionHeader from '@/components/stats/SectionHeader.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, router } from '@inertiajs/vue3';
-import { onMounted, ref } from 'vue';
 import PlayersOfWeek from '@/components/stats/PlayersOfWeek.vue';
 import TeamsOfWeek from '@/components/stats/TeamsOfWeek.vue';
 import TeamPointsTrend from '@/components/stats/TeamPointsTrend.vue';
