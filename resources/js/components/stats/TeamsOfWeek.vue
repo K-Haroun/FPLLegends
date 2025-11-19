@@ -61,36 +61,53 @@ const getChartData = (team) => {
     }
 }
 
+const positions = {
+    1: 'Goalkeeper',
+    2: 'Defender',
+    3: 'Midfielder',
+    4: 'Forward',
+};
+
 const safeName = (team_name) => team_name.replace(/\s+/g, '_');
 const teamImage = (team_id, team_name) => `/images/teams/${team_id}_${safeName(team_name)}.png`;
 </script>
 
 <template>
     <div
-        class="flex justify-start items-center gap-6 rounded-md p-5 border-1 border-gray-200 dark:border-gray-900 dark:bg-primary-foreground shadow-md">
+        class="flex flex-col justify-start items-center gap-6 rounded-md sm:p-5 py-5 border-1 border-gray-200 dark:border-gray-900 dark:bg-primary-foreground shadow-md">
 
-        <div class="flex flex-col justify-center items-center gap-3 size-30">
+        <div class="flex justify-center items-center gap-3 w-full">
             <img :src="teamImage(topTeam.id, topTeam.name)" alt="Team Image" class="size-12"
                 @error="e => e.target.src = '/images/players/profileplaceholder.png'">
             <div class="flex flex-col justify-center items-center">
-                <p class="text-md font-bold">{{ topTeam.name }}</p>
-                <p class="text-sm">{{ topTeam.points }} Points</p>
+                <p class="text-xl font-bold">{{ topTeam.name }}</p>
             </div>
+            <div class="text-2xl">|</div>
+            <p class="text-2xl">{{ topTeam.points }} Points</p>
         </div>
 
-        <div class="flex flex-col gap-1">
-            <div v-for="player in topPlayers" :key="player.id">
-                <div
-                    class="flex justify-between w-45 border-1 dark:border-gray-500 bg-primary-foreground px-2 text-sm">
-                    <h3 class="font-bold">
-                        {{ player.name }}
-                    </h3>
-                    <span>
-                        {{ player.total_points }} Points
-                    </span>
-                </div>
-            </div>
-        </div>
+        <table class="table-auto w-full h-60 text-center text-xs">
+            <thead class="border-b border-gray-200">
+                <tr>
+                    <th>Player</th>
+                    <th>Position</th>
+                    <th>Goals</th>
+                    <th>Assists</th>
+                    <th>Saves</th>
+                    <th>Points</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="player in topPlayers" :key="player.id">
+                    <td>{{ player.name }}</td>
+                    <td>{{ positions[player.position].slice(0, 3) }}</td>
+                    <td>{{ player.goals_scored }}</td>
+                    <td>{{ player.assists }}</td>
+                    <td>{{ player.saves }}</td>
+                    <td>{{ player.total_points }}</td>
+                </tr>
+            </tbody>
+        </table>
 
         <div class="bg-primary-foreground dark:bg-gray-50 rounded px-2">
             <Line :data="getChartData(topTeam).data" :options="getChartData(topTeam).options" />

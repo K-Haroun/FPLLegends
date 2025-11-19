@@ -57,7 +57,7 @@ class StatsController extends Controller
     {
         $latestGameweek = $this->getCurrentGameWeek();
 
-        if (! $latestGameweek) {
+        if (!$latestGameweek) {
             return [
                 'gameweek' => null,
                 'top_players' => [],
@@ -112,7 +112,7 @@ class StatsController extends Controller
             $trend = [];
             foreach ($gameweeks as $gw) {
                 $points = PlayerPerformance::where('gameweek_id', $gw->id)
-                    ->whereHas('player', fn ($q) => $q->where('team_id', $team->id))
+                    ->whereHas('player', fn($q) => $q->where('team_id', $team->id))
                     ->sum('total_points');
                 $trend[] = [
                     'gameweek' => $gw->fpl_id,
@@ -124,6 +124,7 @@ class StatsController extends Controller
                 return [
                     'id' => $performance->id,
                     'name' => $performance->player->web_name,
+                    'position' => $performance->player->position,
                     'minutes' => $performance->minutes,
                     'goals_scored' => $performance->goals_scored,
                     'assists' => $performance->assists,
@@ -180,7 +181,7 @@ class StatsController extends Controller
             $trend = [];
             foreach ($gameweeks as $gw) {
                 $points = PlayerPerformance::where('gameweek_id', $gw->id)
-                    ->whereHas('player', fn ($q) => $q->where('team_id', $team->id))
+                    ->whereHas('player', fn($q) => $q->where('team_id', $team->id))
                     ->sum('total_points');
 
                 $trend[] = [
