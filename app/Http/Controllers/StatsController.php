@@ -45,6 +45,7 @@ class StatsController extends Controller
                     'fpl_id' => $player->fpl_id,
                     'name' => $player->web_name,
                     'team' => $player->team->name ?? null,
+                    'team_id' => $player->team->id ?? null,
                     'position' => $player->position,
                     'total_points' => $player->total_points,
                     'price' => $player->now_cost ?? null,

@@ -49,18 +49,18 @@ class SyncPlayerPerformances extends Command
         foreach ($elements as $element) {
             $player = Player::where('fpl_id', $element['id'])->first();
 
-            if (! $player) {
+            if (!$player) {
                 continue; // skip unknown players
             }
 
             // players can have multiple fixtures in a GW (e.g. double GW)
             foreach ($element['explain'] as $fixtureStats) {
                 $fixture = Fixture::where('fpl_id', $fixtureStats['fixture'])->first();
-                if (! $fixture) {
+                if (!$fixture) {
                     continue;
                 }
 
-                $stats = collect($fixtureStats['stats'])->mapWithKeys(fn ($s) => [$s['identifier'] => $s['value']]);
+                $stats = collect($element['stats']);
 
                 PlayerPerformance::updateOrCreate(
                     [
@@ -82,7 +82,20 @@ class SyncPlayerPerformances extends Command
                         'saves' => $stats['saves'] ?? 0,
                         'bonus' => $stats['bonus'] ?? 0,
                         'bps' => $stats['bps'] ?? 0,
-                        'total_points' => $element['stats']['total_points'] ?? 0,
+                        'influence' => $stats['influence'] ?? 0,
+                        'creativity' => $stats['creativity'] ?? 0,
+                        'threat' => $stats['threat'] ?? 0,
+                        'ict_index' => $stats['ict_index'] ?? 0,
+                        'clearances_blocks_interceptions' => $stats['clearances_blocks_interceptions'] ?? 0,
+                        'recoveries' => $stats['recoveries'] ?? 0,
+                        'tackles' => $stats['tackles'] ?? 0,
+                        'defensive_contribution' => $stats['defensive_contribution'] ?? 0,
+                        'starts' => $stats['starts'] ?? 0,
+                        'expected_goals' => $stats['expected_goals'] ?? 0,
+                        'expected_assists' => $stats['expected_assists'] ?? 0,
+                        'expected_goal_involvements' => $stats['expected_goal_involvements'] ?? 0,
+                        'expected_goals_conceded' => $stats['expected_goals_conceded'] ?? 0,
+                        'total_points' => $stats['total_points'] ?? 0,
                     ]
                 );
             }

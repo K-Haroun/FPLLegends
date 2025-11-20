@@ -77,8 +77,10 @@ const teamImage = (team_id, team_name) => `/images/teams/${team_id}_${safeName(t
         class="flex flex-col justify-start items-center gap-6 rounded-md sm:p-5 py-5 border-1 border-gray-200 dark:border-gray-900 dark:bg-primary-foreground shadow-md">
 
         <div class="flex justify-center items-center gap-3 w-full">
+
             <img :src="teamImage(topTeam.id, topTeam.name)" alt="Team Image" class="size-12"
                 @error="e => e.target.src = '/images/players/profileplaceholder.png'">
+                
             <div class="flex flex-col justify-center items-center">
                 <p class="text-xl font-bold">{{ topTeam.name }}</p>
             </div>

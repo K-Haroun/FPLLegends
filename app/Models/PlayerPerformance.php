@@ -10,25 +10,7 @@ class PlayerPerformance extends Model
     /** @use HasFactory<\Database\Factories\PlayerPerformanceFactory> */
     use HasFactory;
 
-     protected $fillable = [
-        'player_id',
-        'fixture_id',
-        'gameweek_id',
-        'minutes',
-        'goals_scored',
-        'assists',
-        'clean_sheets',
-        'goals_conceded',
-        'own_goals',
-        'penalties_saved',
-        'penalties_missed',
-        'yellow_cards',
-        'red_cards',
-        'saves',
-        'bonus',
-        'bps',
-        'total_points',
-    ];
+     protected $guarded = [];
 
     public function gameweek() {return $this->belongsTo(Gameweek::class);}
     public function player() {return $this->belongsTo(Player::class);}
