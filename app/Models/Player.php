@@ -41,4 +41,16 @@ class Player extends Model
         return strtolower(str_replace(' ', '-', $this->first_name . '-' . $this->second_name));
     }
 
+    public function getPlayerPosition()
+    {
+        $map = [
+            1 => 'Goalkeeper',
+            2 => 'Defender',
+            3 => 'Midfielder',
+            4 => 'Forward',
+        ];
+
+        return $map[$this->position] ?? 'Unknown';
+    }
+
 }

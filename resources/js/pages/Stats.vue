@@ -14,7 +14,7 @@ const breadcrumbs = [
     },
 ];
 
-const props = defineProps(['allPlayers', 'topPlayers', 'topTeams', 'topTeamsAllWeeks']);
+const props = defineProps(['allPlayers', 'topPlayers', 'topTeams', 'topTeamsAllWeeks', 'overAndUnderPerformers']);
 
 const currentGameWeek = props.topPlayers.gameweek;
 
@@ -39,7 +39,7 @@ const currentGameWeek = props.topPlayers.gameweek;
 
                 <SectionHeader>Overperformers & Underperformers</SectionHeader>
             <div class="mb-10">
-                <PlayerPerformanceValue :player-data="allPlayers.all_players" />
+                <PlayerPerformanceValue :overAndUnderPerformers="overAndUnderPerformers" />
             </div>
 
             <!-- <SectionHeader>Team points trends</SectionHeader>

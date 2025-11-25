@@ -19,12 +19,14 @@ class StatsController extends Controller
         $topPlayers = $this->topPlayersOfWeek();
         $topTeams = $this->topTeamsOfWeek();
         $topTeamsAllWeeks = $this->topTeamsAllWeeks();
+        $overAndUnderPerformers = $this->overAndUnderPerformers();
 
         return Inertia::render('Stats', [
             'allPlayers' => $allPlayers,
             'topPlayers' => $topPlayers,
             'topTeams' => $topTeams,
             'topTeamsAllWeeks' => $topTeamsAllWeeks,
+            'overAndUnderPerformers' => $overAndUnderPerformers,
         ]);
     }
 
@@ -213,5 +215,76 @@ class StatsController extends Controller
         return Gameweek::where('is_finished', true)
             ->orderByDesc('id')
             ->first();
+    }
+
+    private function overAndUnderPerformers()
+    {
+
+        $latestGameweek = $this->getCurrentGameWeek();
+        $pointsPerMillionThreshold = 1.5;
+
+        $players = Player::select('players.*', 'player_performances.total_points')
+            ->join('player_performances', 'players.id', '=', 'player_performances.player_id')
+            ->where('player_performances.gameweek_id', $latestGameweek->id)
+            ->get()
+            ->map(function ($player) {
+                $player->points_per_million = $player->total_points / ($player->price / 10);
+                return $player;
+            });
+
+        $overperformers = $players
+            ->filter(fn($player) => $player->points_per_million > $pointsPerMillionThreshold)
+            ->sortByDesc('total_points')
+            ->take(5)
+            ->map(function ($player) {
+                $position = $player->getPlayerPosition();
+                $price = $player->getPriceAttribute();
+                return [
+                    'id' => $player->id,
+                    'fpl_id' => $player->fpl_id,
+                    'web_name' => $player->web_name,
+                    'first_name' => $player->first_name,
+                    'second_name' => $player->second_name,
+                    'position' => $position,
+                    'cost' => $price,
+                    'nationality' => $player->nationality,
+                    'squad_number' => $player->squad_number,
+                    'news' => $player->news,
+                    'team' => $player->team->name,
+                    'team_id' => $player->team->id,
+                    'performances' => $player->performances,
+                ];
+            })
+            ->values();
+
+        $underperformers = $players
+            ->filter(fn($player) => $player->points_per_million < $pointsPerMillionThreshold)
+            ->sortByDesc('price')
+            ->take(5)
+            ->map(function ($player) {
+                $position = $player->getPlayerPosition();
+                $price = $player->getPriceAttribute();
+                return [
+                    'id' => $player->id,
+                    'fpl_id' => $player->fpl_id,
+                    'web_name' => $player->web_name,
+                    'first_name' => $player->first_name,
+                    'second_name' => $player->second_name,
+                    'position' => $position,
+                    'cost' => $price,
+                    'nationality' => $player->nationality,
+                    'squad_number' => $player->squad_number,
+                    'news' => $player->news,
+                    'team' => $player->team->name,
+                    'team_id' => $player->team->id,
+                    'performances' => $player->performances,
+                ];
+            })
+            ->values();
+
+        return [
+            'overperformers' => $overperformers,
+            'underperformers' => $underperformers
+        ];
     }
 }
