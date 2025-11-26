@@ -80,7 +80,7 @@ const openStats = (id) => {
     <div class="flex flex-col justify-center gap-2">
         <div v-for="player in overPerformers" :key="player.id" @click="openStats(player.id)">
             <div
-                class="flex flex-wrap flex-col justify-center items-start pl-5 py-2 bg-green-500/20 shadow-md hover:bg-green-500/30">
+                class="flex flex-wrap flex-col justify-center items-start pl-5 py-2 bg-green-500/20 shadow-md hover:bg-green-500/30 cursor-pointer">
 
                 <div class="flex justify-center items-center gap-2 w-full pr-5">
 
@@ -92,7 +92,7 @@ const openStats = (id) => {
                         @error="e => e.target.src = '/images/players/profileplaceholder.png'">
 
                     <div>
-                        <p class="text-md text-wrap">{{ player.web_name }}</p>
+                        <p class="text-md truncate w-40 lg:w-full">{{ player.web_name }}</p>
                     </div>
 
                     <div class="flex text-md font-bold ml-auto">
