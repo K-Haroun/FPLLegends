@@ -58,7 +58,7 @@
             "php artisan app:sync-player-performances --gameweek_id=3",
             "php artisan app:sync-player-performances --gameweek_id=2",
             "php artisan app:sync-player-performances --gameweek_id=1",
-            "php artisan app:import-player-bios file=storage/app/data/premier_league_players.csv"
+            "php artisan app:import-player-bios"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

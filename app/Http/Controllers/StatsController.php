@@ -225,6 +225,7 @@ class StatsController extends Controller
 
         $players = Player::select('players.*', 'player_performances.total_points')
             ->join('player_performances', 'players.id', '=', 'player_performances.player_id')
+            ->where('player_performances.starts', 1)
             ->where('player_performances.gameweek_id', $latestGameweek->id)
             ->get()
             ->map(function ($player) {
