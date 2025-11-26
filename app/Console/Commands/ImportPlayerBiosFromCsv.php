@@ -4,9 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Player;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 use League\Csv\Reader;
-use Illuminate\Support\Str;
 
 class ImportPlayerBiosFromCsv extends Command
 {

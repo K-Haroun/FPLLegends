@@ -7,8 +7,11 @@ const props = defineProps(['player']);
 const country = threeToTwoLetter[props.player.nationality];
 
 const imageFile = (fpl_id, name) => {
-    const sanitizedName = name.toLowerCase().replace(/[^a-z0-9]/g, "_");
-    return `/images/players/${fpl_id}_${sanitizedName}.png`;
+    const sanitizedName = name
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "_");
+    const capitalisedName = sanitizedName.charAt(0).toUpperCase() + sanitizedName.slice(1);
+    return `/images/players/${fpl_id}_${capitalisedName}.png`;
 };
 
 const fallbackImage = ref("/images/players/profileplaceholder.png");
@@ -63,7 +66,7 @@ const positions = {
             <p class="text-white/40">Date of birth</p>
             <p>{{ player.birth_date }}</p>
         </div>
-        
+
         <div class="h-full flex flex-col justify-between items-center">
             <p class="text-white/40">Nationality</p>
             <country-flag :country='country' size='normal' />
