@@ -1,73 +1,27 @@
 <script setup>
+import { ref } from 'vue';
 import PlayerStatBox from './PlayerStatBox.vue';
 
-defineProps(['stats']);
+const props = defineProps(['stats']);
+const gameweekFilter = ref('');
+
 </script>
 
 <template>
 
-    <div v-for="(gameweek, index) in stats">
+    <select v-model="gameweekFilter"
+        class="border p-2 rounded text-xs bg-gray-700 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+        <option value="">All Gameweeks</option>
+        <option v-for="gameweek in [...new Set(props.stats.map(g => g.gameweek_id))]" :key="gameweek" :value="gameweek">
+            Gameweek {{ gameweek }}
+        </option>
+    </select>
+
+    <div v-if="gameweekFilter === ''" v-for="(gameweek, index) in stats" :key="index">
         <h2 class="text-xl my-6">Gameweek {{ stats[index].gameweek_id }}</h2>
-        <!-- <div class="grid grid-cols-6 gap-8 mt-5">
-
-            <PlayerStatBox>
-                <h2>Minutes</h2>
-                <p>{{ stats.minutes }}</p>
-            </PlayerStatBox>
-
-            <PlayerStatBox>
-                <h2>Goals</h2>
-                <p>{{ stats.goals_scored }}</p>
-            </PlayerStatBox>
-
-            <PlayerStatBox>
-                <h2>Assists</h2>
-                <p>{{ stats.assists }}</p>
-            </PlayerStatBox>
-
-            <PlayerStatBox>
-                <h2>Clean Sheets</h2>
-                <p>{{ stats.clean_sheets }}</p>
-            </PlayerStatBox>
-
-            <PlayerStatBox>
-                <h2>Yellow Cards</h2>
-                <p>{{ stats.yellow_cards }}</p>
-            </PlayerStatBox>
-
-            <PlayerStatBox>
-                <h2>Red Cards</h2>
-                <p>{{ stats.red_cards }}</p>
-            </PlayerStatBox>
-
-            <PlayerStatBox>
-                <h2>Own Goals</h2>
-                <p>{{ stats.own_goals }}</p>
-            </PlayerStatBox>
-
-            <PlayerStatBox>
-                <h2>Penalties Missed</h2>
-                <p>{{ stats.penalties_missed }}</p>
-            </PlayerStatBox>
-
-            <PlayerStatBox>
-                <h2>Goals Conceded</h2>
-                <p>{{ stats.goals_conceded }}</p>
-            </PlayerStatBox>
-
-            <PlayerStatBox>
-                <h2>Saves</h2>
-                <p>{{ stats.saves }}</p>
-            </PlayerStatBox>
-
-            <PlayerStatBox>
-                <h2>Penalties Saved</h2>
-                <p>{{ stats.penalties_saved }}</p>
-            </PlayerStatBox>
-        </div> -->
 
         <div class="overflow-x-auto">
-            <div class="block space-y-4">
+            <div class="block space-y-4 text-lg">
                 <div class="border rounded py-2">
                     <div class="flex justify-between hover:bg-accent px-4">
                         <span class="font-semibold">FPL Points</span>
@@ -156,6 +110,105 @@ defineProps(['stats']);
                     <div class="flex justify-between hover:bg-accent px-4">
                         <span class="font-semibold">Penalties Missed</span>
                         <span>{{ stats[index].penalties_missed }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div v-else>
+        <h2 class="text-xl my-6">Gameweek {{ gameweekFilter }}</h2>
+
+        <div v-for="gameweek in stats" class="overflow-x-auto">
+            <div v-if="gameweek.gameweek_id === gameweekFilter" class="block space-y-4 text-lg">
+                <div class="border rounded py-2">
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">FPL Points</span>
+                        <span>{{ gameweek.total_points }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">FPL Bonus Points</span>
+                        <span>{{ gameweek.bps }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Starts</span>
+                        <span>{{ gameweek.starts }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Minutes</span>
+                        <span>{{ gameweek.minutes }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Goals</span>
+                        <span>{{ gameweek.goals_scored }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Assists</span>
+                        <span>{{ gameweek.assists }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Clean Sheets</span>
+                        <span>{{ gameweek.clean_sheets }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Influence, Creativity, Threat</span>
+                        <span>{{ gameweek.ict_index }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Defensive Contributions</span>
+                        <span>{{ gameweek.defensive_contribution }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Tackles</span>
+                        <span>{{ gameweek.tackles }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Recoveries</span>
+                        <span>{{ gameweek.recoveries }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Saves</span>
+                        <span>{{ gameweek.saves }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Goals Conceded</span>
+                        <span>{{ gameweek.goals_conceded }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Own Goals</span>
+                        <span>{{ gameweek.own_goals }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Yellow Cards</span>
+                        <span>{{ gameweek.yellow_cards }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Red Cards</span>
+                        <span>{{ gameweek.red_cards }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Expected Goals</span>
+                        <span>{{ gameweek.expected_goals }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Expected Goal Involvments</span>
+                        <span>{{ gameweek.expected_goal_involvements }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Expected Assists</span>
+                        <span>{{ gameweek.expected_assists }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Blocks & Interceptions</span>
+                        <span>{{ gameweek.clearances_blocks_interceptions }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Penalties Saved</span>
+                        <span>{{ gameweek.penalties_saved }}</span>
+                    </div>
+                    <div class="flex justify-between hover:bg-accent px-4">
+                        <span class="font-semibold">Penalties Missed</span>
+                        <span>{{ gameweek.penalties_missed }}</span>
                     </div>
                 </div>
             </div>
