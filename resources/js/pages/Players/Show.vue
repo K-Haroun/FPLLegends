@@ -21,8 +21,8 @@ defineProps(['player']);
 
     <Head title="Player" />
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="pt-10 grid">
-            <div class="px-5 sm:px-15 flex flex-wrap justify-between gap-10 mb-5">
+        <div class="pt-6 grid">
+            <div class="px-5 sm:px-15 flex flex-wrap justify-between gap-5 mb-5">
                 <PlayerProfile :player="player.data" />
                 <PlayerNews :player="player.data" />
             </div>
