@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import PlayerStatBox from './PlayerStatBox.vue';
+import StatsGraph from './StatsGraph.vue';
 
 const props = defineProps(['stats']);
 const gameweekFilter = ref('');
@@ -9,6 +10,12 @@ const gameweekFilter = ref('');
 
 <template>
 
+    <div>
+        <h3>Season Overview</h3>
+
+        <StatsGraph :stats="stats"/>
+    </div>
+<!--     
     <select v-model="gameweekFilter"
         class="border p-2 rounded text-xs bg-gray-700 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
         <option value="">All Gameweeks</option>
@@ -213,5 +220,5 @@ const gameweekFilter = ref('');
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>

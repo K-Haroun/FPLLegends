@@ -6,6 +6,7 @@ import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import { initializeTheme } from './composables/useAppearance';
 import { ZiggyVue } from 'ziggy-js';
+import VueApexCharts from "vue3-apexcharts";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -20,6 +21,7 @@ createInertiaApp({
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
+            .use(VueApexCharts)
             .mount(el);
     },
     progress: {
