@@ -26,8 +26,8 @@ defineProps(['player']);
                 <PlayerProfile :player="player.data" />
                 <PlayerNews :player="player.data" />
             </div>
-            <div class="dark:bg-black/30 min-h-screen px-2 sm:px-15 py-3">
-                <PlayerProfileStats :stats="player.data.performances"/>
+            <div class="dark:bg-black/30 px-2 sm:px-15 py-3">
+                <PlayerProfileStats :stats="player.data"/>
             </div>
             <hr>
 

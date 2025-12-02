@@ -21,7 +21,7 @@ const series =
     ]
 const options = {
     chart: {
-        height: 350,
+        height: 400,
         type: 'line',
         dropShadow: {
             enabled: true,
@@ -32,7 +32,7 @@ const options = {
             opacity: 0.3
         },
         zoom: {
-            enabled: true
+            enabled: false
         },
         toolbar: {
             show: false
@@ -49,7 +49,7 @@ const options = {
         borderColor: '#97BFE6',
         row: {
             colors: ['#151b26', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
+            opacity: 0.5,
         },
     },
     markers: {
@@ -92,6 +92,6 @@ const options = {
 </script>
 <template>
     <div>
-        <apexchart width="100%" type="line" :options="options" :series="series"></apexchart>
+        <apexchart type="line" :options="options" :series="series"></apexchart>
     </div>
 </template>

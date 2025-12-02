@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fixture;
 use App\Models\Player;
 use App\Models\PlayerPerformance;
 use Inertia\Inertia;
@@ -21,7 +22,8 @@ class PlayerController extends Controller
     }
 
     public function show(Player $player) {
-        $player->load(['performances' => function ($query) {
+        $player->load([
+            'performances' => function ($query) {
             $query->orderBy('gameweek_id', 'desc');
         }]);
 

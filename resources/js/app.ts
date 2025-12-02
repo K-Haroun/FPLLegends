@@ -8,7 +8,7 @@ import { initializeTheme } from './composables/useAppearance';
 import { ZiggyVue } from 'ziggy-js';
 import VueApexCharts from "vue3-apexcharts";
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || 'FPL Legends';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
