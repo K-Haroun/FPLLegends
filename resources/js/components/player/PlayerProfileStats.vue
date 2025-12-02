@@ -4,7 +4,7 @@ import PlayerStatBox from './PlayerStatBox.vue';
 import StatsGraph from './StatsGraph.vue';
 import StatsPerFixture from './StatsPerFixture.vue';
 
-const props = defineProps(['stats']);
+const props = defineProps(['stats', 'fixtures']);
 const gameweekFilter = ref('');
 
 </script>
@@ -18,7 +18,7 @@ const gameweekFilter = ref('');
             <StatsGraph :stats="stats.performances"/>
         </div>
         <div class="w-sm sm:w-full mx-auto">
-            <StatsPerFixture :fixtures="stats.fixtures" :performances="stats.performances" />
+            <StatsPerFixture :fixtures="fixtures" :performances="stats.performances" />
         </div>
     </div>
 </template>

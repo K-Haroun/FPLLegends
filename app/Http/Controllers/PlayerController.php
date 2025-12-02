@@ -28,7 +28,21 @@ class PlayerController extends Controller
         }]);
 
         return Inertia::render("Players/Show", [
-            'player' => PlayerResource::make($player)
+            'player' => PlayerResource::make($player),
+            'fixtures' => $player->performances->map(function ($performance) {
+                return [
+                    'gameweek_id' => $performance->gameweek_id,
+                    'total_points' => $performance->total_points,
+                    'fixture' => [
+                        'id' => $performance->fixture->id,
+                        'home_team' => $performance->fixture->homeTeam,
+                        'away_team' => $performance->fixture->awayTeam,
+                        'home_score' => $performance->fixture->team_h_score,
+                        'away_score' => $performance->fixture->team_a_score,
+                        'kickoff' => $performance->fixture->kickoff_time,
+                    ],
+                ];
+            }),
         ]);
     }
 }

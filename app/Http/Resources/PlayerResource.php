@@ -29,20 +29,6 @@ class PlayerResource extends JsonResource
             "nationality" => $this->nationality,
             "squad_number" => $this->squad_number,
             "performances" => $this->whenLoaded('performances'),
-            "fixtures" => $this->performances->map(function ($performance) {
-                return [
-                    'gameweek_id' => $performance->gameweek_id,
-                    'total_points' => $performance->total_points,
-                    'fixture' => [
-                        'id' => $performance->fixture->id,
-                        'home_team' => $performance->fixture->homeTeam,
-                        'away_team' => $performance->fixture->awayTeam,
-                        'home_score' => $performance->fixture->team_h_score,
-                        'away_score' => $performance->fixture->team_a_score,
-                        'kickoff' => $performance->fixture->kickoff_time,
-                    ],
-                ];
-            }),
         ];
     }
 }
