@@ -12,7 +12,7 @@ const breadcrumbs = [
     },
 ];
 
-defineProps(['player', 'fixtures']);
+defineProps(['player', 'fixtures', 'season_stats']);
 
 
 </script>
@@ -27,7 +27,7 @@ defineProps(['player', 'fixtures']);
                 <PlayerNews :player="player.data" />
             </div>
             <div class="dark:bg-black/30 px-2 sm:px-15 py-3">
-                <PlayerProfileStats :stats="player.data" :fixtures="fixtures"/>
+                <PlayerProfileStats :stats="player.data" :fixtures="fixtures" :season_stats="season_stats"/>
             </div>
             <hr>
 

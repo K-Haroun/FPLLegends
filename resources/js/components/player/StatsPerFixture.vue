@@ -10,7 +10,7 @@ const teamImage = (team_id, team_name) =>
   <div class="mx-auto">
     <div
       v-for="(f, index) in fixtures"
-      class="border border-gray-400/20 rounded-lg my-3 p-3"
+      class="border border-gray-400/20 bg-blue-500/1 rounded-lg my-3 p-3"
     >
       <div class="flex gap-3 justify-center items-center">
         <div class="flex flex-col justify-center items-center gap-2">

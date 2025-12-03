@@ -17,7 +17,7 @@ class PlayerController extends Controller
 
         return Inertia::render('Players/Index', [
             'players' => PlayerResource::collection($players),
-            'allPlayers' => PlayerResource::collection(Player::all())
+            'allPlayers' => PlayerResource::collection(Player::all()),
         ]);
     }
 
@@ -26,6 +26,7 @@ class PlayerController extends Controller
             'performances' => function ($query) {
             $query->orderBy('gameweek_id', 'desc');
         }]);
+
 
         return Inertia::render("Players/Show", [
             'player' => PlayerResource::make($player),
@@ -43,6 +44,25 @@ class PlayerController extends Controller
                     ],
                 ];
             }),
+            'season_stats' => $this->totalStats($player)
         ]);
+    }
+
+    private function totalStats(Player $player) {
+        $totalPoints = 0;
+        $totalGoals = 0;
+        $totalAssists = 0;
+
+        foreach ($player->performances as $p) {
+            $totalPoints += $p->total_points;
+            $totalGoals += $p->goals_scored;
+            $totalAssists += $p->assists;
+        }
+
+        return [
+            'season_points' => $totalPoints,
+            'season_goals' => $totalGoals,
+            'season_assists' => $totalAssists,
+        ];
     }
 }
