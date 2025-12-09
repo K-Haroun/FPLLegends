@@ -14,6 +14,7 @@ class PlayerResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $position = $this->getPlayerPosition();
         return [
             "id" => $this->id,
             "fpl_id" => $this->fpl_id,
@@ -22,7 +23,7 @@ class PlayerResource extends JsonResource
             "second_name" => $this->second_name,
             "team" => $this->team->name ?? null,
             "team_id" => $this->team->id ?? null,
-            "position" => $this->position,
+            "position" => $position,
             "now_cost" => $this->now_cost,
             "news" => $this->news,
             "birth_date" => $this->birth_date,

@@ -2,6 +2,8 @@
 
 @import 'tw-animate-css';
 
+@plugin "daisyui";
+
 @plugin 'tailwind-scrollbar' {
     nocompatible: true;
     preferredStrategy: 'pseudoelements';
