@@ -19,12 +19,19 @@ const search = ref('');
 const positionFilter = ref('');
 const muted = true;
 const userTeam = null;
+const addingPlayerPositionID = ref('');
 const positions = {
     1: 'Goalkeeper',
     2: 'Defender',
     3: 'Midfielder',
     4: 'Forward',
 };
+
+const addedPlayers = ref([]);
+const addedGk = ref([]);
+const addedDef = ref([]);
+const addedMid = ref([]);
+const addedFor = ref([]);
 
 const filteredPlayers = computed(() => {
     const list = props.all_players.data;
@@ -53,9 +60,52 @@ const onImageError = (event) => {
     event.target.src = fallbackImage.value;
 };
 
-const alertNow = () => {
-    alert('Hello')
+const addingPlayer = (id) => {
+    addingPlayerPositionID.value = id;
 }
+
+const addPlayer = (player) => {
+
+    if (addingPlayerPositionID.value == 1) {
+        if (addedGk.value.length < 1) {
+            addedGk.value.push(player);
+            addedPlayers.value.push(player);
+        } else {
+            alert('Cannot add more than 1 Goalkeeper');
+        }
+    }
+    if (addingPlayerPositionID.value == 2) {
+        if (addedDef.value.length < 4) {
+            addedDef.value.push(player);
+            addedPlayers.value.push(player);
+        } else {
+            alert('Cannot add more than 4 Defenders');
+        }
+    }
+    if (addingPlayerPositionID.value == 3) {
+        if (addedMid.value.length < 4) {
+            addedMid.value.push(player);
+            addedPlayers.value.push(player);
+        } else {
+            alert('Cannot add more than 4 Midfielders');
+        }
+    }
+    if (addingPlayerPositionID.value == 4) {
+        if (addedFor.value.length < 4) {
+            addedFor.value.push(player);
+            addedPlayers.value.push(player);
+        } else {
+            alert('Cannot add more than 4 Forwards');
+        }
+    }
+
+
+}
+
+const saveTeam = () => {
+    addedPlayers.value.length = 0;
+}
+
 </script>
 
 <template>
@@ -76,7 +126,7 @@ const alertNow = () => {
                                     <div class="flex flex-col gap-4">
                                         <fieldset class="fieldset">
                                             <legend class="fieldset-legend">What do you want to call your team?</legend>
-                                            <input type="text" class="input" placeholder="Team name..." />
+                                            <input type="text" class="input bg-blue-400/5" placeholder="Team name..." />
                                         </fieldset>
                                         <div class="flex flex-col gap-3">
                                             <hr class="border-blue-400/40">
@@ -85,16 +135,28 @@ const alertNow = () => {
                                                 <div class="flex flex-col gap-2">
                                                     <h3 class="text-base">GK</h3>
                                                     <div>
-                                                        <div class="grid grid-flow-row grid-rows-4 gap-4">
-                                                            <div class="" onclick="my_modal_2.showModal()">
-                                                                <UserRoundPlus
-                                                                    class="cursor-pointer" />
+                                                        <div
+                                                            class="grid grid-flow-row grid-rows-4 gap-3 content-center">
+                                                            <div v-for="p in addedGk"
+                                                                class="w-20 flex flex-col justify-center items-center gap-1">
+                                                                <img :src="imageFile(p.fpl_id, p.name)"
+                                                                    :alt="`${p.name} profile`" @error="onImageError"
+                                                                    class="h-7 sm:h-10 border rounded-lg border-gray-100 bg-gray-100 px-1 pt-1" />
+                                                                <h3 class="truncate text-center text-xs">
+                                                                    {{
+                                                                        p.name }}</h3>
+                                                            </div>
+                                                            <div v-if="addedGk.length < 1" @click="addingPlayer(1)"
+                                                                onclick="my_modal_2.showModal()"
+                                                                class="flex justify-center">
+                                                                <UserRoundPlus class="cursor-pointer" />
                                                             </div>
                                                             <dialog id="my_modal_2" class="modal">
                                                                 <div class="modal-box">
                                                                     <div>
                                                                         <h3 class="text-lg font-bold">Pick a player</h3>
-                                                                        <div class="modal-action flex flex-col justify-start content-start">
+                                                                        <div
+                                                                            class="modal-action flex flex-col justify-start content-start">
                                                                             <!-- Search -->
                                                                             <input v-model="search" type="text"
                                                                                 placeholder="Search players..."
@@ -108,8 +170,7 @@ const alertNow = () => {
                                                                                     class="border rounded p-2 text-xs bg-gray-700">
                                                                                     <option value="">All Positions
                                                                                     </option>
-                                                                                    <option
-                                                                                        v-for="pos in positions"
+                                                                                    <option v-for="pos in positions"
                                                                                         :key="pos" :value="pos">
                                                                                         {{ pos }}
                                                                                     </option>
@@ -117,22 +178,40 @@ const alertNow = () => {
 
                                                                             </div>
                                                                             <div
+                                                                                class="flex justify-start items-start gap-3">
+                                                                                <div v-for="p in addedPlayers"
+                                                                                    class="w-20 cursor-pointer flex flex-col justify-center items-center gap-1">
+                                                                                    <img :src="imageFile(p.fpl_id, p.name)"
+                                                                                        :alt="`${p.name} profile`"
+                                                                                        @error="onImageError"
+                                                                                        class="h-7 sm:h-10 border rounded-lg border-gray-100 bg-gray-100 px-1 pt-1" />
+                                                                                    <h3
+                                                                                        class="truncate text-center text-xs">
+                                                                                        {{
+                                                                                            p.name }}</h3>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div
                                                                                 class="flex flex-wrap overflow-auto gap-3 justify-center items-start bg-gray-900/30 py-5 mb-3 rounded-lg h-100">
                                                                                 <div v-for="player in filteredPlayers"
-                                                                                    @click="alertNow"
+                                                                                    @click="addPlayer(player)"
                                                                                     class="w-20 cursor-pointer flex flex-col justify-center items-center gap-1">
                                                                                     <img :src="imageFile(player.fpl_id, player.name)"
-                                                                                        :alt="`${player.zname} profile`"
+                                                                                        :alt="`${player.name} profile`"
                                                                                         @error="onImageError"
-                                                                                        class="h-7 sm:h-10 border rounded-full border-gray-100 bg-gray-100 px-1 pt-1" />
+                                                                                        class="h-7 sm:h-10 border rounded-lg border-gray-100 bg-gray-100 px-1 pt-1" />
                                                                                     <h3
                                                                                         class="truncate text-center text-xs">
                                                                                         {{
                                                                                             player.name }}</h3>
                                                                                 </div>
                                                                             </div>
-                                                                            <form method="dialog">
-                                                                                <button class="btn btn-primary">Close</button>
+                                                                            <form method="dialog"
+                                                                                class="flex gap-3 justify-end">
+                                                                                <button
+                                                                                    class="btn btn-soft">Close</button>
+                                                                                <button @click="saveTeam"
+                                                                                    class="btn btn-soft btn-success">Save</button>
                                                                             </form>
                                                                         </div>
                                                                     </div>
@@ -146,9 +225,19 @@ const alertNow = () => {
                                                     <h3 class="text-base">DEF</h3>
                                                     <div>
                                                         <div class="grid grid-flow-row grid-rows-4 gap-4">
-                                                            <div class="" onclick="my_modal_2.showModal()">
-                                                                <UserRoundPlus
-                                                                    class="cursor-pointer" />
+                                                            <div v-for="p in addedDef"
+                                                                class="w-20 flex flex-col justify-center items-center gap-1">
+                                                                <img :src="imageFile(p.fpl_id, p.name)"
+                                                                    :alt="`${p.name} profile`" @error="onImageError"
+                                                                    class="h-7 sm:h-10 border rounded-lg border-gray-100 bg-gray-100 px-1 pt-1" />
+                                                                <h3 class="truncate text-center text-xs">
+                                                                    {{
+                                                                        p.name }}</h3>
+                                                            </div>
+                                                            <div v-if="addedDef.length < 4" @click="addingPlayer(2)"
+                                                                onclick="my_modal_2.showModal()"
+                                                                class="flex justify-center">
+                                                                <UserRoundPlus class="cursor-pointer" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -158,9 +247,19 @@ const alertNow = () => {
                                                     <h3 class="text-base">MID</h3>
                                                     <div>
                                                         <div class="grid grid-flow-row grid-rows-4 gap-4">
-                                                            <div class="" onclick="my_modal_2.showModal()">
-                                                                <UserRoundPlus
-                                                                    class="cursor-pointer" />
+                                                            <div v-for="p in addedMid"
+                                                                class="w-20 flex flex-col justify-center items-center gap-1">
+                                                                <img :src="imageFile(p.fpl_id, p.name)"
+                                                                    :alt="`${p.name} profile`" @error="onImageError"
+                                                                    class="h-7 sm:h-10 border rounded-lg border-gray-100 bg-gray-100 px-1 pt-1" />
+                                                                <h3 class="truncate text-center text-xs">
+                                                                    {{
+                                                                        p.name }}</h3>
+                                                            </div>
+                                                            <div v-if="addedMid.length < 4" @click="addingPlayer(3)"
+                                                                onclick="my_modal_2.showModal()"
+                                                                class="flex justify-center">
+                                                                <UserRoundPlus class="cursor-pointer" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -170,9 +269,19 @@ const alertNow = () => {
                                                     <h3 class="text-base">FOR</h3>
                                                     <div>
                                                         <div class="grid grid-flow-row grid-rows-4 gap-4">
-                                                            <div class="" onclick="my_modal_2.showModal()">
-                                                                <UserRoundPlus
-                                                                    class="cursor-pointer" />
+                                                            <div v-for="p in addedFor"
+                                                                class="w-20 flex flex-col justify-center items-center gap-1">
+                                                                <img :src="imageFile(p.fpl_id, p.name)"
+                                                                    :alt="`${p.name} profile`" @error="onImageError"
+                                                                    class="h-7 sm:h-10 border rounded-lg border-gray-100 bg-gray-100 px-1 pt-1" />
+                                                                <h3 class="truncate text-center text-xs">
+                                                                    {{
+                                                                        p.name }}</h3>
+                                                            </div>
+                                                            <div v-if="addedFor.length < 4" @click="addingPlayer(4)"
+                                                                onclick="my_modal_2.showModal()"
+                                                                class="flex justify-center">
+                                                                <UserRoundPlus class="cursor-pointer" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -184,8 +293,9 @@ const alertNow = () => {
                                 </form>
 
                                 <div class="modal-action">
-                                    <form method="dialog">
-                                        <button class="btn btn-primary">Close</button>
+                                    <form method="dialog" class="flex gap-3 justify-end">
+                                        <button class="btn btn-soft">Close</button>
+                                        <button class="btn btn-soft btn-success">Create Team</button>
                                     </form>
                                 </div>
                             </div>
