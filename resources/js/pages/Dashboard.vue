@@ -4,7 +4,7 @@ import { dashboard } from '@/routes';
 import { Head } from '@inertiajs/vue3';
 import PlaceholderPattern from '../components/PlaceholderPattern.vue';
 import { computed, ref } from 'vue';
-import { UserRoundPlus } from 'lucide-vue-next';
+import { UserRoundPlus, X } from 'lucide-vue-next';
 
 const breadcrumbs = [
     {
@@ -16,7 +16,6 @@ const breadcrumbs = [
 const props = defineProps(['all_players']);
 
 const search = ref('');
-const positionFilter = ref('');
 const muted = true;
 const userTeam = null;
 const addingPlayerPositionID = ref('');
@@ -41,8 +40,7 @@ const filteredPlayers = computed(() => {
             !search.value ||
             (player.first_name ?? '').toLowerCase().includes(search.value.toLowerCase()) || (player.second_name ?? '').toLowerCase().includes(search.value.toLowerCase());
 
-        const matchesPosition =
-            !positionFilter.value || player.position == positionFilter.value;
+        const matchesPosition = player.position == positions[addingPlayerPositionID.value];
 
         return matchesSearch && matchesPosition;
     });
@@ -61,6 +59,7 @@ const onImageError = (event) => {
 };
 
 const addingPlayer = (id) => {
+    
     addingPlayerPositionID.value = id;
 }
 
@@ -98,8 +97,21 @@ const addPlayer = (player) => {
             alert('Cannot add more than 4 Forwards');
         }
     }
+}
 
-
+const removePlayer = (player) => {
+    if (player.position == 'Goalkeeper') {
+        addedGk.value = [];
+    }
+    if (player.position == 'Defender') {
+        addedDef.value = addedDef.value.filter(p => p !== player);
+    }
+    if (player.position == 'Midfielder') {
+        addedMid.value = addedMid.value.filter(p => p !== player);
+    }
+    if (player.position == 'Forward') {
+        addedFor.value = addedFor.value.filter(p => p !== player);
+    }
 }
 
 const saveTeam = () => {
@@ -130,21 +142,30 @@ const saveTeam = () => {
                                         </fieldset>
                                         <div class="flex flex-col gap-3">
                                             <hr class="border-blue-400/40">
-                                            <div class="flex justify-between text-center px-3">
+                                            <div class="grid grid-cols-4 justify-between text-center">
 
                                                 <div class="flex flex-col gap-2">
                                                     <h3 class="text-base">GK</h3>
                                                     <div>
                                                         <div
                                                             class="grid grid-flow-row grid-rows-4 gap-3 content-center">
-                                                            <div v-for="p in addedGk"
-                                                                class="w-20 flex flex-col justify-center items-center gap-1">
-                                                                <img :src="imageFile(p.fpl_id, p.name)"
-                                                                    :alt="`${p.name} profile`" @error="onImageError"
-                                                                    class="h-7 sm:h-10 border rounded-lg border-gray-100 bg-gray-100 px-1 pt-1" />
-                                                                <h3 class="truncate text-center text-xs">
-                                                                    {{
-                                                                        p.name }}</h3>
+                                                            <div class="w-30 flex justify-center items-start"
+                                                                v-for="p in addedGk">
+                                                                <div
+                                                                    class="flex flex-col justify-center items-center gap-1 pl-6">
+                                                                    <img :src="imageFile(p.fpl_id, p.name)"
+                                                                        :alt="`${p.name} profile`" @error="onImageError"
+                                                                        class="h-7 sm:h-10 border rounded-lg border-gray-100 bg-gray-100 px-1 pt-1" />
+                                                                    <div>
+
+                                                                    </div>
+                                                                    <h3 class="truncate text-center text-xs w-15">
+                                                                        {{
+                                                                            p.name }}</h3>
+                                                                </div>
+                                                                <div @click="removePlayer(p)" class="cursor-pointer">
+                                                                    <X />
+                                                                </div>
                                                             </div>
                                                             <div v-if="addedGk.length < 1" @click="addingPlayer(1)"
                                                                 onclick="my_modal_2.showModal()"
@@ -164,17 +185,6 @@ const saveTeam = () => {
 
                                                                             <div
                                                                                 class="flex-1 sm:flex-2 lg:flex-3 flex items-center gap-2">
-
-                                                                                <!-- Position Filter -->
-                                                                                <select v-model="positionFilter"
-                                                                                    class="border rounded p-2 text-xs bg-gray-700">
-                                                                                    <option value="">All Positions
-                                                                                    </option>
-                                                                                    <option v-for="pos in positions"
-                                                                                        :key="pos" :value="pos">
-                                                                                        {{ pos }}
-                                                                                    </option>
-                                                                                </select>
 
                                                                             </div>
                                                                             <div
@@ -225,14 +235,23 @@ const saveTeam = () => {
                                                     <h3 class="text-base">DEF</h3>
                                                     <div>
                                                         <div class="grid grid-flow-row grid-rows-4 gap-4">
-                                                            <div v-for="p in addedDef"
-                                                                class="w-20 flex flex-col justify-center items-center gap-1">
-                                                                <img :src="imageFile(p.fpl_id, p.name)"
-                                                                    :alt="`${p.name} profile`" @error="onImageError"
-                                                                    class="h-7 sm:h-10 border rounded-lg border-gray-100 bg-gray-100 px-1 pt-1" />
-                                                                <h3 class="truncate text-center text-xs">
-                                                                    {{
-                                                                        p.name }}</h3>
+                                                            <div class="w-30 flex justify-center items-start"
+                                                                v-for="p in addedDef">
+                                                                <div
+                                                                    class="flex flex-col justify-center items-center gap-1 pl-6">
+                                                                    <img :src="imageFile(p.fpl_id, p.name)"
+                                                                        :alt="`${p.name} profile`" @error="onImageError"
+                                                                        class="h-7 sm:h-10 border rounded-lg border-gray-100 bg-gray-100 px-1 pt-1" />
+                                                                    <div>
+
+                                                                    </div>
+                                                                    <h3 class="truncate text-center text-xs w-15">
+                                                                        {{
+                                                                            p.name }}</h3>
+                                                                </div>
+                                                                <div @click="removePlayer(p)" class="cursor-pointer">
+                                                                    <X />
+                                                                </div>
                                                             </div>
                                                             <div v-if="addedDef.length < 4" @click="addingPlayer(2)"
                                                                 onclick="my_modal_2.showModal()"
@@ -247,14 +266,23 @@ const saveTeam = () => {
                                                     <h3 class="text-base">MID</h3>
                                                     <div>
                                                         <div class="grid grid-flow-row grid-rows-4 gap-4">
-                                                            <div v-for="p in addedMid"
-                                                                class="w-20 flex flex-col justify-center items-center gap-1">
-                                                                <img :src="imageFile(p.fpl_id, p.name)"
-                                                                    :alt="`${p.name} profile`" @error="onImageError"
-                                                                    class="h-7 sm:h-10 border rounded-lg border-gray-100 bg-gray-100 px-1 pt-1" />
-                                                                <h3 class="truncate text-center text-xs">
-                                                                    {{
-                                                                        p.name }}</h3>
+                                                            <div class="w-30 flex justify-center items-start"
+                                                                v-for="p in addedMid">
+                                                                <div
+                                                                    class="flex flex-col justify-center items-center gap-1 pl-6">
+                                                                    <img :src="imageFile(p.fpl_id, p.name)"
+                                                                        :alt="`${p.name} profile`" @error="onImageError"
+                                                                        class="h-7 sm:h-10 border rounded-lg border-gray-100 bg-gray-100 px-1 pt-1" />
+                                                                    <div>
+
+                                                                    </div>
+                                                                    <h3 class="truncate text-center text-xs w-15">
+                                                                        {{
+                                                                            p.name }}</h3>
+                                                                </div>
+                                                                <div @click="removePlayer(p)" class="cursor-pointer">
+                                                                    <X />
+                                                                </div>
                                                             </div>
                                                             <div v-if="addedMid.length < 4" @click="addingPlayer(3)"
                                                                 onclick="my_modal_2.showModal()"
@@ -269,14 +297,23 @@ const saveTeam = () => {
                                                     <h3 class="text-base">FOR</h3>
                                                     <div>
                                                         <div class="grid grid-flow-row grid-rows-4 gap-4">
-                                                            <div v-for="p in addedFor"
-                                                                class="w-20 flex flex-col justify-center items-center gap-1">
-                                                                <img :src="imageFile(p.fpl_id, p.name)"
-                                                                    :alt="`${p.name} profile`" @error="onImageError"
-                                                                    class="h-7 sm:h-10 border rounded-lg border-gray-100 bg-gray-100 px-1 pt-1" />
-                                                                <h3 class="truncate text-center text-xs">
-                                                                    {{
-                                                                        p.name }}</h3>
+                                                            <div class="w-30 flex justify-center items-start"
+                                                                v-for="p in addedFor">
+                                                                <div
+                                                                    class="flex flex-col justify-center items-center gap-1 pl-6">
+                                                                    <img :src="imageFile(p.fpl_id, p.name)"
+                                                                        :alt="`${p.name} profile`" @error="onImageError"
+                                                                        class="h-7 sm:h-10 border rounded-lg border-gray-100 bg-gray-100 px-1 pt-1" />
+                                                                    <div>
+
+                                                                    </div>
+                                                                    <h3 class="truncate text-center text-xs w-15">
+                                                                        {{
+                                                                            p.name }}</h3>
+                                                                </div>
+                                                                <div @click="removePlayer(p)" class="cursor-pointer">
+                                                                    <X />
+                                                                </div>
                                                             </div>
                                                             <div v-if="addedFor.length < 4" @click="addingPlayer(4)"
                                                                 onclick="my_modal_2.showModal()"
