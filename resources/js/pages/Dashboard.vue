@@ -12,7 +12,7 @@ const breadcrumbs = [
     },
 ];
 
-const props = defineProps(["all_players", "message"]);
+const props = defineProps(["all_players"]);
 
 const imageFile = (fpl_id, name) => {
     const sanitizedName = name.toLowerCase().replace(/[^a-z0-9]/g, "_");
@@ -45,8 +45,8 @@ const onImageError = (event) => {
                             onclick="create_team_modal.showModal()">
                             Create Team
                         </button>
-                        
-                        <CreateTeamModal id="create_team_modal" :all_players="all_players"/>
+
+                        <CreateTeamModal id="create_team_modal" :all_players="all_players" />
 
                         <h2>You have no team created</h2>
                     </div>

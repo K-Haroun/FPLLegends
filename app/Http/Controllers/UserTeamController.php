@@ -36,13 +36,13 @@ class UserTeamController extends Controller
             ],
         ]);
     }
-    
+
     public function store(Request $request)
     {
 
         $validated = $request->validate([
-            'name' => 'string|max:255',
-            'players' => 'array',
+            'name' => 'required|string|max:255',
+            'players' => 'required|array',
             // 'players.*.id' => 'required|integer|exists:players,id',
         ]);
 
