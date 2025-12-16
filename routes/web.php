@@ -19,6 +19,7 @@ Route::get('/players', [PlayerController::class, 'index'])->name('players');
 Route::get('/players/{player}', [PlayerController::class, 'show'])->name('player.show');
 
 Route::post('/userTeam', [UserTeamController::class, 'store'])->name('userTeam.store');
+Route::delete('/userTeam/{team}', [UserTeamController::class, 'destroy'])->name('userTeam.destroy');
 
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
+require __DIR__ . '/settings.php';
+require __DIR__ . '/auth.php';

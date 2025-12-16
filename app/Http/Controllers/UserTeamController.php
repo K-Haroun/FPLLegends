@@ -39,11 +39,17 @@ class UserTeamController extends Controller
 
     public function store(Request $request)
     {
-
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|regex:/^[a-zA-Z0-9\s]*$/',
             'players' => 'required|array',
-            // 'players.*.id' => 'required|integer|exists:players,id',
+            'players.Goalkeeper' => 'nullable|array|max:1',
+            'players.Goalkeeper.*.id' => 'required|integer|exists:players,id',
+            'players.Defenders' => 'nullable|array|max:4',
+            'players.Defenders.*.id' => 'required|integer|exists:players,id',
+            'players.Midfielders' => 'nullable|array|max:4',
+            'players.Midfielders.*.id' => 'required|integer|exists:players,id',
+            'players.Forwards' => 'nullable|array|max:4',
+            'players.Forwards.*.id' => 'required|integer|exists:players,id',
         ]);
 
         $team = UserTeam::create([
@@ -53,17 +59,33 @@ class UserTeamController extends Controller
 
         $pivotData = [];
         foreach ($validated['players'] as $position => $players) {
-            foreach ($players as $player) {
-                $pivotData[$player['id']] = ['position' => $position];
+            if (!empty($players)) { // Only process if there are players
+                foreach ($players as $player) {
+                    $pivotData[$player['id']] = ['position' => $position];
+                }
             }
         }
 
-        $team->players()->attach($pivotData);
+        if (!empty($pivotData)) {
+            $team->players()->attach($pivotData);
+        }
 
         return back()->with([
             'message' => 'Team created successfully',
             'user_team' => $team->load('players'),
         ]);
+    }
+
+    public function destroy(UserTeam $team)
+    {
+        // Make sure user owns the team
+        if ($team->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $team->delete();
+
+        return back()->with('message', 'Team deleted successfully');
     }
 
 }

@@ -1,8 +1,10 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { UserRoundPlus, X } from "lucide-vue-next";
-import { useForm } from "@inertiajs/vue3";
+import { Link, useForm } from "@inertiajs/vue3";
+import { useToast } from "vue-toastification";
 
+const toast = useToast();
 const props = defineProps(["all_players"]);
 
 const addedPlayers = ref([]);
@@ -82,7 +84,6 @@ const addPlayer = (player) => {
     const isAlreadyAdded = tempAddedPlayers.value.some(p => p.id === player.id);
 
     if (isAlreadyAdded) {
-        alert(`${player.name} is already in your team!`);
         return;
     }
 
@@ -90,32 +91,24 @@ const addPlayer = (player) => {
         if (tempAddedGk.value.length < 1) {
             tempAddedGk.value.push(player);
             tempAddedPlayers.value.push(player);
-        } else {
-            alert("Cannot add more than 1 Goalkeeper");
         }
     }
     if (addingPlayerPositionID.value == 2) {
         if (tempAddedDef.value.length < 4) {
             tempAddedDef.value.push(player);
             tempAddedPlayers.value.push(player);
-        } else {
-            alert("Cannot add more than 4 Defenders");
         }
     }
     if (addingPlayerPositionID.value == 3) {
         if (tempAddedMid.value.length < 4) {
             tempAddedMid.value.push(player);
             tempAddedPlayers.value.push(player);
-        } else {
-            alert("Cannot add more than 4 Midfielders");
         }
     }
     if (addingPlayerPositionID.value == 4) {
         if (tempAddedFor.value.length < 4) {
             tempAddedFor.value.push(player);
             tempAddedPlayers.value.push(player);
-        } else {
-            alert("Cannot add more than 4 Forwards");
         }
     }
 };
@@ -195,6 +188,7 @@ const submitTeam = () => {
 
     form.post('/userTeam', {
         onSuccess: () => {
+            toast.success('Team created successfully!');
             // Reset after successful submission
             addedPlayers.value = [];
             addedGk.value = [];
@@ -205,6 +199,7 @@ const submitTeam = () => {
             document.getElementById('create_team_modal').close();
         },
         onError: (errors) => {
+            toast.error('Failed to create team. Please try again.');
             console.error('Submission errors:', errors);
         }
     });
