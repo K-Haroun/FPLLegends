@@ -116,15 +116,19 @@ const addPlayer = (player) => {
 const removePlayer = (player) => {
     if (player.position == "Goalkeeper") {
         tempAddedGk.value = [];
+        addedGk.value = [];
     }
     if (player.position == "Defender") {
         tempAddedDef.value = tempAddedDef.value.filter((p) => p !== player);
+        addedDef.value = addedDef.value.filter((p) => p !== player);
     }
     if (player.position == "Midfielder") {
         tempAddedMid.value = tempAddedMid.value.filter((p) => p !== player);
+        addedMid.value = addedMid.value.filter((p) => p !== player);
     }
     if (player.position == "Forward") {
         tempAddedFor.value = tempAddedFor.value.filter((p) => p !== player);
+        addedFor.value = addedFor.value.filter((p) => p !== player);
     }
     tempAddedPlayers.value = tempAddedPlayers.value.filter((p) => p !== player);
 };
@@ -197,6 +201,7 @@ const submitTeam = () => {
             addedFor.value = [];
             form.reset();
             document.getElementById('create_team_modal').close();
+            vm.$forceUpdate();
         },
         onError: (errors) => {
             toast.error('Failed to create team. Please try again.');
@@ -231,16 +236,17 @@ const submitTeam = () => {
                             <h3 class="text-base font-semibold">GK</h3>
                             <div class="flex flex-col gap-3">
                                 <div class="flex justify-center items-center" v-for="p in addedGk" :key="p.id">
-                                    <div class="flex flex-col justify-center items-center gap-1">
+                                    <div class="relative flex flex-col justify-center items-center gap-1">
                                         <img :src="imageFile(p.fpl_id, p.name)" :alt="`${p.name} profile`"
                                             @error="onImageError"
                                             class="h-7 sm:h-10 border rounded-lg border-gray-100 bg-gray-100 px-1 pt-1" />
-                                        <h3 class="truncate text-center text-xs w-15">
+                                        <h3 class="truncate text-center text-xs w-10">
                                             {{ p.name }}
                                         </h3>
-                                    </div>
-                                    <div @click="removePlayer(p)" class="cursor-pointer hover:text-red-500 ml-1">
-                                        <X :size="16" />
+                                        <div @click="removePlayer(p)"
+                                            class="absolute bottom-10 left-10 cursor-pointer hover:text-red-500">
+                                            <X :size="16" />
+                                        </div>
                                     </div>
                                 </div>
                                 <div v-if="addedGk.length < 1" @click="addingPlayer(1)" onclick="my_modal_2.showModal()"
@@ -255,16 +261,17 @@ const submitTeam = () => {
                             <h3 class="text-base font-semibold">DEF</h3>
                             <div class="flex flex-col gap-3">
                                 <div class="flex justify-center items-center" v-for="p in addedDef" :key="p.id">
-                                    <div class="flex flex-col justify-center items-center gap-1">
+                                    <div class="relative flex flex-col justify-center items-center gap-1">
                                         <img :src="imageFile(p.fpl_id, p.name)" :alt="`${p.name} profile`"
                                             @error="onImageError"
                                             class="h-7 sm:h-10 border rounded-lg border-gray-100 bg-gray-100 px-1 pt-1" />
-                                        <h3 class="truncate text-center text-xs w-15">
+                                        <h3 class="truncate text-center text-xs w-10">
                                             {{ p.name }}
                                         </h3>
-                                    </div>
-                                    <div @click="removePlayer(p)" class="cursor-pointer hover:text-red-500 ml-1">
-                                        <X :size="16" />
+                                        <div @click="removePlayer(p)"
+                                            class="absolute bottom-10 left-10 cursor-pointer hover:text-red-500">
+                                            <X :size="16" />
+                                        </div>
                                     </div>
                                 </div>
                                 <div v-if="addedDef.length < 4" @click="addingPlayer(2)"
@@ -279,16 +286,17 @@ const submitTeam = () => {
                             <h3 class="text-base font-semibold">MID</h3>
                             <div class="flex flex-col gap-3">
                                 <div class="flex justify-center items-center" v-for="p in addedMid" :key="p.id">
-                                    <div class="flex flex-col justify-center items-center gap-1">
+                                    <div class="relative flex flex-col justify-center items-center gap-1">
                                         <img :src="imageFile(p.fpl_id, p.name)" :alt="`${p.name} profile`"
                                             @error="onImageError"
                                             class="h-7 sm:h-10 border rounded-lg border-gray-100 bg-gray-100 px-1 pt-1" />
-                                        <h3 class="truncate text-center text-xs w-15">
+                                        <h3 class="truncate text-center text-xs w-10">
                                             {{ p.name }}
                                         </h3>
-                                    </div>
-                                    <div @click="removePlayer(p)" class="cursor-pointer hover:text-red-500 ml-1">
-                                        <X :size="16" />
+                                        <div @click="removePlayer(p)"
+                                            class="absolute bottom-10 left-10 cursor-pointer hover:text-red-500">
+                                            <X :size="16" />
+                                        </div>
                                     </div>
                                 </div>
                                 <div v-if="addedMid.length < 4" @click="addingPlayer(3)"
@@ -303,16 +311,17 @@ const submitTeam = () => {
                             <h3 class="text-base font-semibold">FOR</h3>
                             <div class="flex flex-col gap-3">
                                 <div class="flex justify-center items-center" v-for="p in addedFor" :key="p.id">
-                                    <div class="flex flex-col justify-center items-center gap-1">
+                                    <div class="relative flex flex-col justify-center items-center gap-1">
                                         <img :src="imageFile(p.fpl_id, p.name)" :alt="`${p.name} profile`"
                                             @error="onImageError"
                                             class="h-7 sm:h-10 border rounded-lg border-gray-100 bg-gray-100 px-1 pt-1" />
-                                        <h3 class="truncate text-center text-xs w-15">
+                                        <h3 class="truncate text-center text-xs w-10">
                                             {{ p.name }}
                                         </h3>
-                                    </div>
-                                    <div @click="removePlayer(p)" class="cursor-pointer hover:text-red-500 ml-1">
-                                        <X :size="16" />
+                                        <div @click="removePlayer(p)"
+                                            class="absolute bottom-10 left-10 cursor-pointer hover:text-red-500">
+                                            <X :size="16" />
+                                        </div>
                                     </div>
                                 </div>
                                 <div v-if="addedFor.length < 4" @click="addingPlayer(4)"
@@ -350,8 +359,8 @@ const submitTeam = () => {
 
                 <!-- Selected Players Preview -->
                 <div v-if="tempAddedPlayers.length > 0" class="flex flex-wrap gap-3 p-3 bg-blue-400/10 rounded-lg">
-                    <div v-for="p in tempAddedPlayers" :key="p.id" class="flex items-center gap-1">
-                        <div class="w-20 flex flex-col justify-center items-center gap-1">
+                    <div v-for="p in tempAddedPlayers" :key="p.id" class="flex items-center">
+                        <div class="w-15 flex flex-col justify-center items-center gap-1">
                             <img :src="imageFile(p.fpl_id, p.name)" :alt="`${p.name} profile`" @error="onImageError"
                                 class="h-7 sm:h-10 border rounded-lg border-gray-100 bg-gray-100 px-1 pt-1" />
                             <h3 class="truncate text-center text-xs">
