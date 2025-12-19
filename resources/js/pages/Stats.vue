@@ -33,7 +33,7 @@ const currentGameWeek = props.topPlayers.gameweek;
             </div>
 
             <SectionHeader>Teams of the week</SectionHeader>
-            <div class="flex flex-col flex-wrap justify-between gap-2 mb-10">
+            <div class="flex flex-col flex-wrap justify-between gap-5 mb-10">
                 <TeamsOfWeek v-for="(team, id) in topTeams" :key="id" :topTeam="team" :currentGameweek="currentGameWeek"/>
             </div>
 
