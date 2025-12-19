@@ -1,34 +1,16 @@
 <script setup>
-import { computed, ref } from 'vue';
-import { threeToTwoLetter, countryNames } from '@/utils/countryCodes';
+import { ref } from 'vue';
+import { threeToTwoLetter } from '@/utils/countryCodes';
 import CountryFlag from 'vue-country-flag-next';
+import { imageFile, teamImage } from '@/utils/helpers';
 
 const props = defineProps(['player']);
 const country = threeToTwoLetter[props.player.nationality];
-
-const imageFile = (fpl_id, name) => {
-    const sanitizedName = name
-        .toLowerCase()
-        .replace(/[^a-z0-9]/g, "_");
-    const capitalisedName = sanitizedName.charAt(0).toUpperCase() + sanitizedName.slice(1);
-    return `/images/players/${fpl_id}_${capitalisedName}.png`;
-};
-
 const fallbackImage = ref("/images/players/profileplaceholder.png");
-
 const onImageError = (event) => {
     event.target.src = fallbackImage.value; // Switch to placeholder on error
 };
 
-const safeName = (team_name) => team_name.replace(/\s+/g, '_');
-const teamImage = `/images/teams/${props.player.team_id}_${safeName(props.player.team)}.png`;
-
-const positions = {
-    1: 'Goalkeeper',
-    2: 'Defender',
-    3: 'Midfielder',
-    4: 'Forward',
-};
 </script>
 
 <template>
@@ -45,7 +27,7 @@ const positions = {
 
                 <div class="flex justify-start items-center gap-2 text-lg sm:text-2xl">
                     <span class="flex justify-start items-center gap-1">
-                        <img :src="teamImage" alt="Player Team" class="size-5 sm:size-8">
+                        <img :src="teamImage(props.player.team_id, props.player.team)" alt="Player Team" class="size-5 sm:size-8">
                         {{ player.team }}
                     </span>
 
@@ -58,7 +40,7 @@ const positions = {
                     <span class="text-xl font-extralight">|</span>
 
                     <div class="h-full flex flex-col justify-between items-center">
-                        <h3>{{ positions[player.position] }}</h3>
+                        <h3>{{ player.position }}</h3>
                     </div>
                 </div>
             </div>

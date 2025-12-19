@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue';
 import StatsGraph from './StatsGraph.vue';
 import StatsPerFixture from './StatsPerFixture.vue';
 import NumberAnimation from '../ui/NumberAnimation.vue';
@@ -40,7 +39,7 @@ const props = defineProps(['stats', 'fixtures', 'season_stats']);
         <div class="text-center">
             <StatsGraph :stats="stats.performances" />
         </div>
-        <div class="w-sm sm:w-full mx-auto">
+        <div class="w-sm sm:w-2xl mx-auto">
             <StatsPerFixture :fixtures="fixtures" :performances="stats.performances" />
         </div>
     </div>

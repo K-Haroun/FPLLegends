@@ -3,6 +3,7 @@ import Pagination from "@/components/ui/pagination/Pagination.vue";
 import AppLayout from "@/layouts/AppLayout.vue";
 import { Head, Link } from "@inertiajs/vue3";
 import { computed, ref } from "vue";
+import { imageFile } from "@/utils/helpers";
 
 const breadcrumbs = [
     {
@@ -40,14 +41,6 @@ const filteredPlayers = computed(() => {
     });
 });
 
-const imageFile = (fpl_id, name) => {
-    const sanitizedName = name
-        .toLowerCase()
-        .replace(/[^a-z0-9]/g, "_");
-    const capitalisedName = sanitizedName.charAt(0).toUpperCase() + sanitizedName.slice(1);
-    return `/images/players/${fpl_id}_${capitalisedName}.png`;
-};
-
 const fallbackImage = ref("/images/players/profileplaceholder.png");
 
 const onImageError = (event) => {
@@ -84,8 +77,8 @@ const teamImage = (player) => `/images/teams/${player.team_id}_${safeName(player
                     <!-- Position Filter -->
                     <select v-model="positionFilter" class="border rounded p-2 text-xs bg-gray-700">
                         <option value="">All Positions</option>
-                        <option v-for="(pos, key) in positions" :key="pos" :value="key">
-                            {{ pos }}
+                        <option v-for="(key, pos) in positions" :key="key" :value="key">
+                            {{ key }}
                         </option>
                     </select>
 
