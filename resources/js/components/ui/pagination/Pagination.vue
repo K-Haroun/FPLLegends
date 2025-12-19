@@ -1,7 +1,6 @@
 <script setup>
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
 import { Link } from '@inertiajs/vue3';
-import { computed, onMounted } from 'vue';
+import { onMounted } from 'vue';
 
 const props = defineProps(['meta', 'links']);
 
