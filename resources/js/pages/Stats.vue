@@ -4,7 +4,6 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, router } from '@inertiajs/vue3';
 import PlayersOfWeek from '@/components/stats/PlayersOfWeek.vue';
 import TeamsOfWeek from '@/components/stats/TeamsOfWeek.vue';
-import TeamPointsTrend from '@/components/stats/TeamPointsTrend.vue';
 import PlayerPerformanceValue from '@/components/stats/PlayerPerformanceValue.vue';
 
 const breadcrumbs = [
@@ -41,9 +40,6 @@ const currentGameWeek = props.topPlayers.gameweek;
             <div class="mb-10">
                 <PlayerPerformanceValue :overAndUnderPerformers="overAndUnderPerformers" />
             </div>
-
-            <!-- <SectionHeader>Team points trends</SectionHeader>
-            <TeamPointsTrend :team-points-trend="topTeamsAllWeeks" :current-game-week="currentGameWeek" /> -->
         </div>
     </AppLayout>
 </template>
