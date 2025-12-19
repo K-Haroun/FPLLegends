@@ -253,6 +253,7 @@ class StatsController extends Controller
                     'news' => $player->news,
                     'team' => $player->team->name,
                     'team_id' => $player->team->id,
+                    'total_points' => $player->total_points,
                     'performances' => $player->performances,
                 ];
             })
@@ -278,6 +279,7 @@ class StatsController extends Controller
                     'news' => $player->news,
                     'team' => $player->team->name,
                     'team_id' => $player->team->id,
+                    'total_points' => $player->total_points,
                     'performances' => $player->performances,
                 ];
             })

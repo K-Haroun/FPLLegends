@@ -1,71 +1,12 @@
 <script setup>
-import { Scatter } from 'vue-chartjs'
-import {
-    Chart as ChartJS,
-    Title,
-    Tooltip,
-    Legend,
-    PointElement,
-    LinearScale
-} from 'chart.js'
-import { ref, Transition } from 'vue';
+import { ref } from 'vue';
 import { Vue3SlideUpDown } from "vue3-slide-up-down";
 import { ChevronDown, ChevronUp } from 'lucide-vue-next';
-
-// ChartJS.register(Title, Tooltip, Legend, PointElement, LinearScale)
+import { imageFile, teamImage } from '@/utils/helpers';
 
 const props = defineProps(['overAndUnderPerformers']);
 const overPerformers = props.overAndUnderPerformers.overperformers;
 const underPerformers = props.overAndUnderPerformers.underperformers;
-
-const imageFile = (fpl_id, name) => `/images/players/${fpl_id}_${name}.png`;
-
-// const datasets = [{
-//     label: 'Players',
-//     data: props.playerData.map(player => ({
-//         x: player.price / 10,
-//         y: player.total_points,
-//         name: player.name
-//     })),
-//     backgroundColor: props.playerData.map(player =>
-//         player.total_points / (player.price / 10) > pointsPerMillionThreshold ? '#2A9D8F' : '#E63946'
-//     ),
-//     pointRadius: 4,
-//     pointHoverRadius: 6
-// }]
-
-// const chartData = { datasets }
-
-// const chartOptions = {
-//     responsive: true,
-//     plugins: {
-//         title: {
-//             display: true,
-//             text: 'Underperforming vs Overperforming Players'
-//         },
-//         tooltip: {
-//             callbacks: {
-//                 label: (context) => `${context.raw.name}: Cost £${context.raw.x}M, Points ${context.raw.y}`
-//             }
-//         },
-//         legend: { display: false }
-//     },
-//     scales: {
-//         x: {
-//             title: { display: true, text: 'Cost (£M)' },
-//             min: 4,
-//             max: 15
-//         },
-//         y: {
-//             title: { display: true, text: 'Total Points' },
-//             min: 0,
-//             max: 20
-//         }
-//     }
-// }
-
-const safeName = (team_name) => team_name.replace(/\s+/g, '_');
-const teamImage = (team_id, team_name) => `/images/teams/${team_id}_${safeName(team_name)}.png`;
 
 // Opening player stats
 const show = ref(false);
@@ -92,13 +33,13 @@ const openStats = (id) => {
                         @error="e => e.target.src = '/images/players/profileplaceholder.png'">
 
                     <div>
-                        <p class="text-md truncate w-40 lg:w-full">{{ player.web_name }}</p>
+                        <p class="text-md text-wrap">{{ player.web_name }}</p>
                     </div>
 
-                    <div class="flex text-md font-bold ml-auto">
+                    <div class="flex text-md ml-auto">
                         <!-- <p>£{{ player.price / 10 }} M</p>
                     <p class="mx-3">|</p> -->
-                        <p>{{ player.performances[0].total_points }} Points</p>
+                        <p>{{ player.total_points }} Pts</p>
                     </div>
 
                     <div>
@@ -113,7 +54,7 @@ const openStats = (id) => {
             </div>
 
             <!-- Transitioned content -->
-            <Vue3SlideUpDown v-model="show">
+            <Vue3SlideUpDown v-model="show" :duration="200">
                 <div v-if="openPlayerId === player.id" class="bg-green-800/20 text-white p-3">
                     <table class="table-fixed w-full h-10 text-center text-xs">
                         <thead class="border-b border-gray-200">
@@ -130,13 +71,13 @@ const openStats = (id) => {
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{{ player.performances[0].minutes }}</td>
-                                <td>{{ player.performances[0].goals_scored }}</td>
-                                <td>{{ player.performances[0].assists }}</td>
-                                <td>{{ player.performances[0].expected_goals }}</td>
-                                <td>{{ player.performances[0].expected_assists }}</td>
-                                <td>{{ player.performances[0].defensive_contribution }}</td>
-                                <td>{{ player.performances[0].bps }}</td>
+                                <td>{{ player.performances[1].minutes }}</td>
+                                <td>{{ player.performances[1].goals_scored }}</td>
+                                <td>{{ player.performances[1].assists }}</td>
+                                <td>{{ player.performances[1].expected_goals }}</td>
+                                <td>{{ player.performances[1].expected_assists }}</td>
+                                <td>{{ player.performances[1].defensive_contribution }}</td>
+                                <td>{{ player.performances[1].bps }}</td>
                                 <td>{{ player.cost }}M</td>
                             </tr>
                         </tbody>
@@ -166,10 +107,10 @@ const openStats = (id) => {
                         <p class="text-md text-wrap">{{ player.web_name }}</p>
                     </div>
 
-                    <div class="flex text-md font-bold ml-auto">
+                    <div class="flex text-md ml-auto">
                         <!-- <p>£{{ player.price / 10 }} M</p>
                     <p class="mx-3">|</p> -->
-                        <p>{{ player.performances[0].total_points }} Points</p>
+                        <p>{{ player.total_points }} Pts</p>
                     </div>
 
                     <div>
@@ -184,7 +125,7 @@ const openStats = (id) => {
             </div>
 
             <!-- Transitioned content -->
-            <Vue3SlideUpDown v-model="show">
+            <Vue3SlideUpDown v-model="show" :duration="200">
                 <div v-if="openPlayerId === player.id" class="bg-red-800/20 text-white p-3">
                     <table class="table-fixed w-full h-10 text-center text-xs">
                         <thead class="border-b border-gray-200">
@@ -201,13 +142,13 @@ const openStats = (id) => {
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{{ player.performances[0].minutes }}</td>
-                                <td>{{ player.performances[0].goals_scored }}</td>
-                                <td>{{ player.performances[0].assists }}</td>
-                                <td>{{ player.performances[0].expected_goals }}</td>
-                                <td>{{ player.performances[0].expected_assists }}</td>
-                                <td>{{ player.performances[0].defensive_contribution }}</td>
-                                <td>{{ player.performances[0].bps }}</td>
+                                <td>{{ player.performances[1].minutes }}</td>
+                                <td>{{ player.performances[1].goals_scored }}</td>
+                                <td>{{ player.performances[1].assists }}</td>
+                                <td>{{ player.performances[1].expected_goals }}</td>
+                                <td>{{ player.performances[1].expected_assists }}</td>
+                                <td>{{ player.performances[1].defensive_contribution }}</td>
+                                <td>{{ player.performances[1].bps }}</td>
                                 <td>{{ player.cost }}M</td>
                             </tr>
                         </tbody>
@@ -216,9 +157,4 @@ const openStats = (id) => {
             </Vue3SlideUpDown>
         </div>
     </div>
-
-
-    <!-- <div class="p-5 dark:bg-gray-900 rounded-md shadow-md">
-        <Scatter :data="chartData" :options="chartOptions" />
-    </div> -->
 </template>

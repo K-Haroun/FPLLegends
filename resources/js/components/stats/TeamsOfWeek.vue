@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import TeamStatsGraph from './TeamStatsGraph.vue';
+import { teamImage } from '@/utils/helpers';
 
 const props = defineProps(['topTeam', 'currentGameweek']);
 const topPlayers = computed(() => {
@@ -9,9 +10,6 @@ const topPlayers = computed(() => {
 const upcomingFixtures = computed(() => {
     return props.topTeam.upcomingFixtures
 });
-
-const safeName = (team_name) => team_name.replace(/[\s']+/g, '_');
-const teamImage = (team_id, team_name) => `/images/teams/${team_id}_${safeName(team_name)}.png`;
 </script>
 
 <template>
